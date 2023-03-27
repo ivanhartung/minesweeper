@@ -1,7 +1,5 @@
 import random
 
-X_COORDINATE = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-
 def generate_board(side, mines):
     
     # Facit

@@ -7,18 +7,20 @@ def clear_terminal():
     system("cls")
 
 # Skriver ut en grid baserat på sidan "X"
-def grid(side, X_COORDINATE):
-    
-    print("")
+def grid(side):
+
+    # Skriver ut alla rader och kolumner, med Y koordinat innan
     for i in range(side, 0, -1):
         if i < 10:
             print(f" {i}", end="")
-            print(side * " #")
         else:
-            print(f"{i} ", end="")
-            print(side * "# ")
-
-    # Skriver x koordinaten som en bokstav från listan "x_coordinate"
+            print(f"{i}", end="")
+        for _ in range(1, side+1):
+            print(" #", end="")
+        print("")
+        
+    # Skriver ut ett värde på X koordinaten
     print("  ", end="")
-    for i in range(1,side+1):
-        print(f" {X_COORDINATE[i-1]}", end='')
+    for x_coordinate in range(1,side):
+        print(f" {x_coordinate}", end="")
+    print("")
