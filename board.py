@@ -20,6 +20,7 @@ def generate_board(side, mines):
             facit[x][y] = "*"
             mines_placed += 1
     
+    #temp
     print(facit)
     
     return facit

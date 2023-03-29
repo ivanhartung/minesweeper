@@ -1,6 +1,6 @@
 from board import *
 from utilities import *
-        
+
 def main():
     
     # Definierar sidan "X"
@@ -16,16 +16,16 @@ def main():
     while True:
         print("How many mines would you like?")
         mines = int(input(">>> "))
-        if mines <= side*side//3 and mines >= 1:
+        if mines <= side*side and mines >= 1:
             break
         else:
-            print(f'\nThe amount of mines need to be between {(side*side)//3} and 1\n')
+            print(f'\nThe amount of mines need to be between {(side*side)} and 1\n')
         
     facit = generate_board(side, mines)
     
-    grid(side)
-    
     while True:
+        clear_terminal()
+        grid(side)
         user_answer = user_input(side, facit)
         if user_answer == None:
             break
