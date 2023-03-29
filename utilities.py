@@ -2,8 +2,8 @@ from os import system
 from game import *
 from board import *
 
-# Funktion för att cleara terminalen
-def clear_terminal():
+# Clear board
+def clear():
     system("cls")
 
 # Skriver ut en grid baserat på sidan "X"
@@ -32,7 +32,7 @@ def grid(side):
     print("                     ", end="")
     n = 0
     for ental in range(0,side-9):
-        if ental < 9:
+        if ental < 10:
             print(f"{ental} ", end="")
         elif ental < 19:
             print(f"{ental-10} ", end ="")
