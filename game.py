@@ -9,34 +9,34 @@ def user_input(side, facit, board, revealed):
 
         # Convert inputs to integers
         try:
-            row_string, column_string = coordinate.split()
+            col_string, row_string = coordinate.split()  # Reversed order of variables here
             row = int(row_string)
-            column = int(column_string)
+            col = int(col_string)
         except ValueError:
             print("\nInvalid input.")
             continue
 
-        if row > side or column > side or row < 1 or column < 1:
-            print(f"\nInvalid input. Please enter row and column values between 1 and {side}.")
+        if row > side or col > side or row < 1 or col < 1:
+            print(f"\nInvalid input. Please enter row and col values between 1 and {side}.")
             continue
 
         # Handle cell that has already been revealed
-        if revealed[row-1][column-1]:
+        if revealed[row-1][col-1]:
             print("\nThis cell has already been revealed. Please choose another cell.")
             continue
             
         # Reveal 
-        if facit[row-1][column-1] == "*":
+        if facit[row-1][col-1] == "*":
             # Lose game
-            board[row-1][column-1] = "*"
+            board[row-1][col-1] = "*"
             return False
         else:
             # Check adjacent cells for mines and update board
-            count = count_mines(facit, row-1, column-1)
-            board[row-1][column-1] = str(count) if count > 0 else " "
-            revealed[row-1][column-1] = True
+            count = count_mines(facit, row-1, col-1)
+            board[row-1][col-1] = str(count) if count > 0 else " "
+            revealed[row-1][col-1] = True
             if count == 0:
-                reveal_cells(side, facit, board, revealed, row-1, column-1)
+                reveal_cells(side, facit, board, revealed, row-1, col-1)
             return True
         
 def reveal_cells(side, facit, board, revealed, row, col):
@@ -76,8 +76,8 @@ def main(board):
             print(f'\nThe amount of mines need to be between {(side*side)} and 1\n')
         
     facit = generate_board(side, mines)
-    board = [[" " for _ in range(side)] for _ in range(side)]
-    revealed = [[False for _ in range(side)] for _ in range(side)]
+    board = [[" " for _ in range(side)] for _ in range(side)] # Chat GPT
+    revealed = [[False for _ in range(side)] for _ in range(side)] # Chat GPT
     
     # Spelet
     while True:
@@ -88,7 +88,7 @@ def main(board):
             # Lose game
             clear()
             print("You lost!")
-            grid(side, facit)
+            grid(side, board, revealed)
             break
         elif board == facit:
             # Win game

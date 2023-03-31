@@ -8,16 +8,19 @@ def clear():
 
 # Skriver ut en grid baserat på sidan "X"
 def grid(side, board, revealed):
-    
-    print(" ", end="")
-    for i in range(side):
-        print(f"{i+1:2d}", end="")
-    print()
+
+    # Skriver alla rader
     for i in range(side-1, -1, -1):
+        
+        # Skriver ut Y koordinat för varje rad
         print(f"{i+1:2d}", end="")
         for j in range(side):
+            
+            # Om user väljer den cellen, skriv ut dess värde (tomt, eller antalet minor runt omkring)
             if revealed[i][j]:
                 print(f" {board[i][j]}", end="")
+            
+            # Om user inte valt den, skriv ut #
             else:
                 print(" #", end="")
         print()
