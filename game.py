@@ -1,51 +1,62 @@
 from board import *
 from utilities import *
-    
-def user_input(side, facit):
-    
+
+def user_input(side, facit, board, revealed):
     while True:
-        
-        # Tar inputs
-        
+        # Take inputs
         print("\nCoordinate? Separate with space.")
         coordinate = input(">>> ")
 
-        # Gör inputsen till 2 strings som splittas som blir till integers
+        # Convert inputs to integers
         try:
             row_string, column_string = coordinate.split()
             row = int(row_string)
             column = int(column_string)
-        
         except ValueError:
             print("\nInvalid input.")
             continue
 
-        if row > side:
-            print(f"\nYour x coordinate is greater than your side of {side}")
+        if row > side or column > side or row < 1 or column < 1:
+            print(f"\nInvalid input. Please enter row and column values between 1 and {side}.")
+            continue
+
+        # Handle cell that has already been revealed
+        if revealed[row-1][column-1]:
+            print("\nThis cell has already been revealed. Please choose another cell.")
+            continue
             
-        elif column > side:
-            print(f"\nYour y coordinate is greater than your side of {side}")
-        
+        # Reveal 
+        if facit[row-1][column-1] == "*":
+            # Lose game
+            board[row-1][column-1] = "*"
+            return False
         else:
-            
-            # Förlora
-            if facit[row-1][column-1] == "*":
-                print("\nGame over! You hit a mine.")
-                return None
-            
-            else:
-                break
-
-    # Lägger user input i en egen lista
-    answer = []
-
-    answer.append(row)
-    answer.append(column)
-
-    return answer
+            # Check adjacent cells for mines and update board
+            count = count_mines(facit, row-1, column-1)
+            board[row-1][column-1] = str(count) if count > 0 else " "
+            revealed[row-1][column-1] = True
+            if count == 0:
+                reveal_cells(side, facit, board, revealed, row-1, column-1)
+            return True
         
-def main(answer):
-    
+def reveal_cells(side, facit, board, revealed, row, col):
+    if facit[row][col] != "*":
+        count = count_mines(facit, row, col)
+        if count == 0:
+            board[row][col] = " "
+        else:
+            board[row][col] = str(count)
+        revealed[row][col] = True
+        if count == 0:
+            for i in range(row-1, row+2):
+                for j in range(col-1, col+2):
+                    if i >= 0 and i < side and j >= 0 and j < side and not revealed[i][j]:
+                        reveal_cells(side, facit, board, revealed, i, j)
+    else:
+        board[row][col] = "*"
+        revealed[row][col] = True
+
+def main(board):
     # Definierar sidan "X"
     while True:
         print('What would you like the side "X" to be?')
@@ -65,17 +76,28 @@ def main(answer):
             print(f'\nThe amount of mines need to be between {(side*side)} and 1\n')
         
     facit = generate_board(side, mines)
+    board = [[" " for _ in range(side)] for _ in range(side)]
+    revealed = [[False for _ in range(side)] for _ in range(side)]
     
     # Spelet
-    while answer != facit:
+    while True:
         clear()
-        grid(side)
-        user_answer = user_input(side, facit)
-        if user_answer is None: # Chat GPT
+        grid(side, board, revealed)
+        user_board = user_input(side, facit, board, revealed)
+        if user_board is False:
+            # Lose game
+            clear()
+            print("You lost!")
+            grid(side, facit)
+            break
+        elif board == facit:
+            # Win game
+            clear()
+            print("You won!")
+            grid(side, board, revealed)
             break
 
 if __name__ == "__main__":
-   
-    # Definierar answer innan
-    answer = []
-    main(answer)
+    # Definierar board innan
+    board = []
+    main(board)
