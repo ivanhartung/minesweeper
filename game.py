@@ -2,36 +2,42 @@ from board import *
 from utilities import *
 
 def user_input(side, facit, board, revealed):
+    
     while True:
-        # Take inputs
+    
+        # User inputs
         print("\nCoordinate? Separate with space.")
         coordinate = input(">>> ")
 
-        # Convert inputs to integers
+        # Gör inputs till integer efter den splittat
         try:
-            col_string, row_string = coordinate.split()  # Reversed order of variables here
+            col_string, row_string = coordinate.split() 
             row = int(row_string)
             col = int(col_string)
+        
+        # Om den inte funkar
         except ValueError:
             print("\nInvalid input.")
             continue
 
+        # Om input är mer än sidan eller mindre än 1
         if row > side or col > side or row < 1 or col < 1:
-            print(f"\nInvalid input. Please enter row and col values between 1 and {side}.")
+            print(f"\nInvalid input. Please enter row and column values between 1 and {side}.")
             continue
 
-        # Handle cell that has already been revealed
+        # Om man väljer samma ruta som en gång innan
         if revealed[row-1][col-1]:
-            print("\nThis cell has already been revealed. Please choose another cell.")
+            print("\nThis square has already been revealed. Please choose another square.")
             continue
-            
-        # Reveal 
+             
         if facit[row-1][col-1] == "*":
-            # Lose game
+            
+            # Förlora
             board[row-1][col-1] = "*"
             return False
         else:
-            # Check adjacent cells for mines and update board
+            
+            # Kollar alla rutor runt för att se om det är minor där
             count = count_mines(facit, row-1, col-1)
             board[row-1][col-1] = str(count) if count > 0 else " "
             revealed[row-1][col-1] = True
@@ -57,6 +63,7 @@ def reveal_cells(side, facit, board, revealed, row, col):
         revealed[row][col] = True
 
 def main(board):
+    
     # Definierar sidan "X"
     while True:
         print('What would you like the side "X" to be?')
@@ -74,8 +81,10 @@ def main(board):
             break
         else:
             print(f'\nThe amount of mines need to be between {(side*side)} and 1\n')
-        
+    
+    # Gör ett facit utifrån "generate_board"
     facit = generate_board(side, mines)
+
     board = [[" " for _ in range(side)] for _ in range(side)] # Chat GPT
     revealed = [[False for _ in range(side)] for _ in range(side)] # Chat GPT
     
