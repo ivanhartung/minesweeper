@@ -16,9 +16,10 @@ def grid(side, board, revealed):
         print(f"{i+1:2d}", end="")
         for j in range(side):
             
-            # Om user väljer den cellen, skriv ut dess värde (tomt, eller antalet minor runt omkring)
+            # Om user väljer den rutan, skriv ut dess värde (tomt, eller antalet minor runt omkring)
             if revealed[i][j]:
                 print(f" {board[i][j]}", end="")
+                
             
             # Om user inte valt den, skriv ut #
             else:
@@ -36,17 +37,33 @@ def grid(side, board, revealed):
             print(f" {x_coordinate}", end="")
     print("")
     print("                     ", end="")
-    n = 0
     for ental in range(0,side-9):
         if ental < 10:
             print(f"{ental} ", end="")
         elif ental < 19:
             print(f"{ental-10} ", end ="")
-            
+           
+# Räknar mängden minor runt omkring den ruta man valde 
 def count_mines(board, row, col):
     count = 0
     for i in range(row-1, row+2):
         for j in range(col-1, col+2):
+            
+            # Kollar rutorna runt och lägger till +1 på count för varje mina
             if i >= 0 and i < len(board) and j >= 0 and j < len(board[0]) and board[i][j] == "*":
                 count += 1
     return count
+
+def all_revealed(revealed):
+    for row in revealed:
+        for square in row:
+            if not square:
+                return False
+    return True
+
+def all_marked(board, facit):
+    for i, row in enumerate(board):
+        for j, square in enumerate(row):
+            if square != "X" and facit[i][j] == "*":
+                return False
+    return True
