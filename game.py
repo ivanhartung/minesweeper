@@ -129,7 +129,7 @@ def user_input(side, facit, board, revealed, marked, board_two):
                     board[row-1][col-1] = (Fore.LIGHTRED_EX + "3" + Fore.WHITE)
                     
                 elif count == 4:
-                    board[row-1][col-1] = (Fore.PURPLE + "4" + Fore.WHITE)
+                    board[row-1][col-1] = (Fore.MAGENTA + "4" + Fore.WHITE)
                     
                 elif count == 5:
                     board[row-1][col-1] = (Fore.RED + "5" + Fore.WHITE)
